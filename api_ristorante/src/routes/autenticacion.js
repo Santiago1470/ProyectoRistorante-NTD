@@ -5,16 +5,16 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 router.post("/signup", async (req, res) => {
-    const { usuario, nombre, correoElectronico, contraseña, rol, carrito } = req.body;
+    const { usuario, nombre, correo, clave, rol, carrito } = req.body;
     const user = new usuarios({
         usuario: usuario,
         nombre: nombre,
-        correoElectronico: correoElectronico,
-        contraseña: contraseña,
+        correo: correo,
+        clave: clave,
         rol: rol,
         carrito: carrito
     });
-    user.contraseña = await user.encryptClave(user.contraseña);
+    user.clave = await user.encryptClave(user.clave);
     await user.save();
     const token = jwt.sign({ id: user._id, rol: user.rol }, process.env.SECRET);
     res.json({
@@ -23,11 +23,11 @@ router.post("/signup", async (req, res) => {
     });
 });
 router.post("/login", async (req, res) => {
-    const { error } = usuarios.validate(req.body.correoElectronico, req.body.contraseña);
+    const { error } = usuarios.validate(req.body.correo, req.body.clave);
     if (error) return res.status(400).json({ error: error.details[0].message });
     const user = await usuarios.findOne({ usuario: req.body.usuario });
     if (!user) return res.status(400).json({ error: "Usuario no encontrado" });
-    const validPassword = await bcrypt.compare(req.body.contraseña, user.contraseña);
+    const validPassword = await bcrypt.compare(req.body.clave, user.clave);
     const token = jwt.sign({ _id: user._id, rol: user.rol }, process.env.SECRET)
     if (!validPassword)
         return res.status(400).json({ error: "Clave no válida" });

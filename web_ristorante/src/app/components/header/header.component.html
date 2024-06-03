@@ -49,6 +49,12 @@
             <a href="/login" class="order_online">
               Pedir comida
             </a>
+            <a *ngIf="autenticacion" (click)="logout()" href="/inicio" class="order_online">
+              Cerrar Sesión
+            </a>
+            <a *ngIf="!autenticacion" href="/login" class="order_online">
+              Iniciar Sesión
+            </a>
           </div>
         </div>
       </nav>

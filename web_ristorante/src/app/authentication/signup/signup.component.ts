@@ -20,7 +20,7 @@ export class SignupComponent {
   onRegister(form: any): void {
     this.authenticationService.register(form.value).subscribe(
       (res) => {
-        localStorage.setItem('accessToken', JSON.parse(JSON.stringify(res)).accessToken);
+        // localStorage.setItem('accessToken', JSON.parse(JSON.stringify(res)).token);
         this.router.navigateByUrl('/login');
       }
     );
