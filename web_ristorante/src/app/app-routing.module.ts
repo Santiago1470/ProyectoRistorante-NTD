@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AnimalComponent } from './components/animal/animal.component';
 import { SignupComponent } from './authentication/signup/signup.component';
 import { LoginComponent } from './authentication/login/login.component';
 import { AppComponent } from './app.component';
@@ -10,7 +9,6 @@ import { GestionmenuComponent } from './components/gestionmenu/gestionmenu.compo
 
 const routes: Routes = [
   {path: '',component: InicioComponent},
-  {path: 'animal',component: AnimalComponent},
   {path: 'signup',component: SignupComponent},
   {path: 'login',component: LoginComponent},
   {path: 'logout',component: AppComponent},
