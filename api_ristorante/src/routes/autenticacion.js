@@ -3,6 +3,7 @@ const router = express.Router();
 const usuarios = require('../models/usuarioSchema');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const admin = require('./administrador');
 
 router.post("/signup", async (req, res) => {
     const { usuario, nombre, correo, clave, rol, carrito } = req.body;
@@ -38,7 +39,7 @@ router.post("/login", async (req, res) => {
     });
 });
 
-router.get('/getUsers', async (req, res) => {
+router.get('/getUsers', admin, async (req, res) => {
     try {
         const usuario = await usuarios.find();
 
