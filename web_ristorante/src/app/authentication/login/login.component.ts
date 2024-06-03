@@ -22,9 +22,13 @@ export class LoginComponent {
   onLogin(form: any): void {
     this.authenticationService.login(form.value).subscribe(
       (res) => {
-        localStorage.setItem('accessToken',JSON.parse(JSON.stringify(res)).accessToken);
-        this.router.navigateByUrl('/animal');
-      }
+        // localStorage.setItem('accessToken',JSON.parse(JSON.stringify(res)).token);
+        this.router.navigateByUrl('/inicio');
+      }/*,
+      (error) => {
+        
+        console.log("Error al iniciar sesión: ", error);
+      }*/
     );
   }
 }

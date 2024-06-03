@@ -10,11 +10,11 @@ const usuarioSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    correoElectronico: {
+    correo: {
         type: String,
         required: true
     },
-    contraseña: {
+    clave: {
         type: String,
         required: true
     },
@@ -34,8 +34,8 @@ const usuarioSchema = mongoose.Schema({
         default: []
     }
 })
-usuarioSchema.methods.encryptClave = async (contraseña) => {
+usuarioSchema.methods.encryptClave = async (clave) => {
     const salt = await bcrypt.genSalt(10);
-    return bcrypt.hash(contraseña, salt);
+    return bcrypt.hash(clave, salt);
 }
 module.exports = mongoose.model('Usuario', usuarioSchema);

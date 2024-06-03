@@ -4,7 +4,7 @@ const platos = require('../models/platosSchema');
 const admin = require('./administrador');
 const token = require('./tokenValidacion')
 
-router.post("/platos",  (req, res) => {
+router.post("/platos", admin, (req, res) => {
     const plato = platos(req.body);
     plato.save()
         .then((data) => res.json(data))

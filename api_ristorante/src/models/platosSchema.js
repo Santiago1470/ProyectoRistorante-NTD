@@ -13,7 +13,9 @@ const platosSchema = mongoose.Schema({
         required: false
     },
     categoria: {
-        type: String    
+        type: String,
+        enum: ['Entrada', 'Plato principal', 'Postre', 'Bebida'],
+        required: true 
     },
     ingredientes: {
         type: [String],

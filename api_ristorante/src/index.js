@@ -8,7 +8,6 @@ const platosRoutes = require('./routes/rutasPlatos');
 const reservasRoutes = require('./routes/rutasReservas');
 const pedidosRoutes = require('./routes/rutasPedidos');
 const autenticacion = require('./routes/autenticacion');
-const categoriasRoutes = require('./routes/rutasCategorias');
 
 require("dotenv").config();
 app.use(parser.urlencoded({extended: false}));  // permite leer los datos que vienen en la petición
@@ -18,7 +17,6 @@ app.use("/Ciprianis", platosRoutes);
 app.use("/Ciprianis", reservasRoutes);
 app.use("/Ciprianis", pedidosRoutes);
 app.use("/Ciprianis", autenticacion)
-app.use("/Ciprianis", categoriasRoutes)
 app.use(express.json());
 
 // Conexión a base de datos

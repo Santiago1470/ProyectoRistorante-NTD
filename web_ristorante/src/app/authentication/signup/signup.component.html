@@ -14,12 +14,16 @@
             <div class="col-lg-6">
               <div class="p-5">
                 <div class="text-center">
-                  <h1 class="h4 text-gray-900 mb-4">Nuevo Usuario</h1>
+                  <h1 class="h4 text-gray-900 mb-4">Crear cuenta</h1>
                 </div>
                 <form class="user" (ngSubmit)="onRegister(formLogin)" #formLogin="ngForm">
                   <div class="form-group">
                     <input type="text" class="form-control form-control-user" id="exampleInputUser"
                       aria-describedby="emailHelp" placeholder="Usuario"  name="usuario" ngModel>
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control form-control-user" id="exampleInputName"
+                      aria-describedby="emailHelp" placeholder="Nombre y apellidos"  name="nombre" ngModel>
                   </div>
                   <div class="form-group">
                     <input type="email" class="form-control form-control-user" id="exampleInputEmail"
@@ -31,7 +35,7 @@
                   </div>
 
                   <button type="submit" class="btn btn-primary btn-user btn-block">
-                    Iniciar sesión
+                    Registrarse
                   </button>
                 </form>
                 <hr>
