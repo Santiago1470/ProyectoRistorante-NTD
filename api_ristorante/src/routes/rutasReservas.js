@@ -5,11 +5,11 @@ const verifyToken = require('./tokenValidacion');
 const usuarios = require('../models/usuarioSchema');
 
 router.post("/reservas", verifyToken, async (req, res) => {
-    const {id} = req.user;
+    const {_id} = req.user;
     const reserva = new reservas(req.body);
-    
     try {
-        const usuario = await usuarios.findById(id);
+        const usuario = await usuarios.findById(_id);
+        console.log(usuario)
         if (!usuario) {
             return res.status(404).json({ error: 'El usuario no existe' });
         }

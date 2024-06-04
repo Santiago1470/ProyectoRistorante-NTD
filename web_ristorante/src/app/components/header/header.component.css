@@ -1,3 +1,13 @@
 .text-dark {
     color: black; /* Cambiar el color del texto a negro */
 }
+
+.contenedor-navbar {
+    padding: 0px 10px 0px 20px;
+}
+
+@media(max-width: 1300px) {
+    .navbar-ul-nav {
+        padding-left: 0px;
+    }
+}

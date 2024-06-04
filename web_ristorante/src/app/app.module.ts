@@ -16,6 +16,7 @@ import { GestionmenuComponent } from './components/gestionmenu/gestionmenu.compo
 import { HeaderComponent } from './components/header/header.component';
 import { InformationComponent } from './components/information/information.component';
 import { ReservacionComponent } from './components/reservacion/reservacion.component';
+import { ReservacionService } from './services/reservacion.service';
 
 @NgModule({
   declarations: [
