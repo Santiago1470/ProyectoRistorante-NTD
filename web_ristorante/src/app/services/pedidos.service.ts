@@ -34,20 +34,4 @@ export class PedidosService {
         }
       });
   }
-
-  getTodosPedidos() {
-    return this.http.get(`${this.apiUri}/carrito`);
-  }
-
-  agregarPedido(platos: { plato: string; estado: string; cantidad: number }[]) {
-    return this.http.post(`${this.apiUri}/carrito/agregar`, { platos });
-  }
-
-  eliminarPlatoDelCarrito(pedidoId: string, platoId: string) {
-    return this.http.delete(`${this.apiUri}/carrito/${pedidoId}/plato/${platoId}`);
-  }
-
-  actualizarEstadoPlatoEnCarrito(pedidoId: string, platoId: string, nuevoEstado: string) {
-    return this.http.put(`${this.apiUri}/carrito/${pedidoId}/plato/${platoId}`, { estado: nuevoEstado });
-  }
 }

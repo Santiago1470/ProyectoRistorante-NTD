@@ -4,8 +4,8 @@
        <p>Selección de tus platos italianos favoritos y preparar una experiencia gastronómica única. ¡Tu menú italiano personalizado te esperará en Cripianis Ristorante!</p>
        <div class="item" *ngFor="let pedido of pedidosList">
         <img [src]="" [alt]="">
-        <h3>{{ pedido.id }}</h3>
-        <p>${{ pedido.cantidad }}</p>
+        <h3>{{ pedido.estado }}</h3>
+        <p>${{ pedido._id }}</p>
       </div>
 </div>
        

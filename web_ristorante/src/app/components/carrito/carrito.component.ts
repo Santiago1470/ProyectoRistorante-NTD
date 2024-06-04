@@ -22,9 +22,11 @@ export class CarritoComponent {
 
   getMisPedidos() {
     this.pedidosService.getMisPedidos().subscribe(
-      (data: {}) => {
-        this.pedidosList = data
-        console.log(data)
+      (data: any[]) => {
+        if(data.length > 0){
+          this.pedidosList = data[0].platos;
+          console.log(this.pedidosList);
+        }
       }
     );
   }
