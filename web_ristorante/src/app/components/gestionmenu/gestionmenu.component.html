@@ -16,9 +16,9 @@
                 <li (click)="consultarPlatosPorCategoria('Bebida')">Bebida</li>
             </ul>
 
-            <div>
-                <button *ngIf="authenticationService.esAdministrador()" class="btn btn-primary"
-                    (click)="abrirModalAgregar()">Agregar Plato</button>
+            <div >
+                <button  *ngIf="authenticationService.esAdministrador()" class="color"
+                        (click)="abrirModalAgregar()">Agregar Plato</button>
             </div>
             <!-- Aquí se listan los platos del menú -->
             <div class="filters-content">
