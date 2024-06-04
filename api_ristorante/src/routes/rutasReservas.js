@@ -24,6 +24,7 @@ router.post("/reservas", verifyToken, async (req, res) => {
 
 router.get("/reservas/:userId", verifyToken, async (req, res) => {
     const {userId} = req.params;
+    console.log("aqui")
     try {
         const reservasUsuario = await reservas.find({ nombreCliente: userId }).populate('nombreCliente');
         res.json(reservasUsuario);
@@ -34,16 +35,28 @@ router.get("/reservas/:userId", verifyToken, async (req, res) => {
 });
 
 router.get("/reservas", (req, res) => {
+    console.log("en todas las reservas")
     reservas.find()
         .then((data) => res.json(data))
         .catch((error) => res.status(500).json({ message: error }));
 });
 
-router.get("/reservas/:id", verifyToken, (req, res) => {
-    const { id } = req.params;
-    reservas.findById(id)
-        .then((data) => res.json(data))
-        .catch((error) => res.status(500).json({ message: error }));
+router.get("/reservas/unidad/:id", verifyToken, async (req, res) => {
+    // const { id } = req.params;
+    // console.log("HOLA!!")
+    // reservas.findById(id)
+    //     .then((data) => res.json(data))
+    //     .catch((error) => res.status(500).json({ message: error }));
+    const {id} = req.params;
+    const {_id} = req.user;
+    console.log("HOLA")
+    try {
+        const reservasUsuario = await reservas.find({ _id: id, nombreCliente: _id}).populate('nombreCliente');
+        res.json(reservasUsuario);
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: error });
+    }
 });
 
 router.put("/reservas/:id", verifyToken, (req, res) => {

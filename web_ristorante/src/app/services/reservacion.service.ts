@@ -26,6 +26,27 @@ export class ReservacionService {
     });
   }
 
+  getReservacion(idReserva: String): Observable<any> {
+    console.log(idReserva)
+    return this.httpClient.get(this.apiUri + `/reservas/unidad/${idReserva}`, {
+      headers:
+      {
+        'Content-Type': 'application/json',
+        'access-token': `${this.token}`
+      }
+    });
+  }
+
+  modificarReserva(idReserva: String, reservacion: Reservacion): Observable<any> {
+    return this.httpClient.put(this.apiUri + `/reservas/${idReserva}`, reservacion, {
+      headers:
+      {
+        'Content-Type': 'application/json',
+        'access-token': `${this.token}`
+      }
+    });
+  }
+
   reservar(reservacion: Reservacion): Observable<any> {
     return this.httpClient.post<Jwtres>(this.apiUri + `/reservas`, reservacion, {
       headers:
