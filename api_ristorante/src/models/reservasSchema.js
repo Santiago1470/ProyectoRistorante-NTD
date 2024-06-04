@@ -26,7 +26,8 @@ const reservasSchema = mongoose.Schema({
     estado: {
         type: String,
         enum: ['Pendiente', 'Confirmada', 'Cancelada'],
-        required: true
+        default: 'Confirmada',
+        required: false
     }
 });
 

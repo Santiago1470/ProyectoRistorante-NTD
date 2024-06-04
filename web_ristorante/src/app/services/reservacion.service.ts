@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
+import { Reservacion } from '../models/reservacion';
+import { Jwtres } from '../models/jwtres';
 // import jwt_decode from 'jwt-decode';
 
 @Injectable({
@@ -11,12 +13,10 @@ export class ReservacionService {
   apiUri = '/Ciprianis';
   token: String = this.authenticationService.getToken() || "";
   idUsuario = this.authenticationService.getIdUsuario();
-  constructor(private http: HttpClient, private authenticationService: AuthenticationService) { }
+  constructor(private httpClient: HttpClient, private authenticationService: AuthenticationService) { }
 
   getReservaciones(): Observable<any> {
-    console.log(this.idUsuario)
-    const token: String = this.authenticationService.getToken() || "";
-    return this.http.get(this.apiUri + `/reservas/${this.idUsuario}`, {
+    return this.httpClient.get(this.apiUri + `/reservas/${this.idUsuario}`, {
       headers:
       {
         'Content-Type': 'application/json',
@@ -24,6 +24,65 @@ export class ReservacionService {
       }
     });
   }
+
+  reservar(reservacion: Reservacion): Observable<any> {
+    return this.httpClient.post<Jwtres>(this.apiUri + `/reservas`, reservacion, {
+      headers:
+      {
+        'Content-Type': 'application/json',
+        'access-token': `${this.token}`
+      },
+      
+    }).pipe(
+      catchError(error => {
+        alert("Parece que ya tiene una reservación para ese día.")
+        return throwError(error);
+      }),
+      tap((res: Jwtres) => {
+        if (res) {
+          
+        } else {
+          console.log('hubo un error')
+        }
+      })
+
+    );
+  }
+
+  cancelarReserva(id: String){
+    return this.httpClient.delete<Jwtres>(this.apiUri + `/reservas/${id}`, {
+      headers:
+      {
+        'Content-Type': 'application/json',
+        'access-token': `${this.token}`
+      },
+      
+    });
+  }
+
+  // modificarReserva(reservacion: Reservacion){
+  //   return this.httpClient.put<Jwtres>(this.apiUri + `/reservas`, reservacion, {
+  //     headers:
+  //     {
+  //       'Content-Type': 'application/json',
+  //       'access-token': `${this.token}`
+  //     },
+      
+  //   }).pipe(
+  //     catchError(error => {
+  //       alert("Parece que ya tiene una reservación para ese día.")
+  //       return throwError(error);
+  //     }),
+  //     tap((res: Jwtres) => {
+  //       if (res) {
+          
+  //       } else {
+  //         console.log('hubo un error')
+  //       }
+  //     })
+
+  //   );
+  // }
 
   // getDecodedToken(): any {
   //   const token = this.token;

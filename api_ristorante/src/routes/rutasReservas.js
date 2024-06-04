@@ -7,9 +7,9 @@ const usuarios = require('../models/usuarioSchema');
 router.post("/reservas", verifyToken, async (req, res) => {
     const {_id} = req.user;
     const reserva = new reservas(req.body);
+    
     try {
         const usuario = await usuarios.findById(_id);
-        console.log(usuario)
         if (!usuario) {
             return res.status(404).json({ error: 'El usuario no existe' });
         }
@@ -25,9 +25,10 @@ router.post("/reservas", verifyToken, async (req, res) => {
 router.get("/reservas/:userId", verifyToken, async (req, res) => {
     const {userId} = req.params;
     try {
-        const reservasUsuario = await reservas.findById({ usuario: userId }).populate('usuario');
+        const reservasUsuario = await reservas.find({ nombreCliente: userId }).populate('nombreCliente');
         res.json(reservasUsuario);
     } catch (error) {
+        console.error(error)
         res.status(500).json({ message: error });
     }
 });
