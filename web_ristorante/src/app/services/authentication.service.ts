@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { User } from '../models/user';
 import { Jwtres } from '../models/jwtres';
+import * as jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class AuthenticationService {
   authSubject = new BehaviorSubject(false);
   private token: string | null = '';
   private autenticacion: boolean = false;
+  private idUsuario: String = "";
 
   constructor(private httpClient: HttpClient) { }
 
@@ -28,8 +30,8 @@ export class AuthenticationService {
       }),
       tap((res: Jwtres) => {
         if (res) {
-          
           this.saveToken(JSON.parse(JSON.stringify(res)).token);
+          console.log(this.idUsuario);
           this.isLoggedIn();
           // localStorage.setItem('accessToken',JSON.parse(JSON.stringify(res)).token);
           // console.log(this.token);
@@ -44,6 +46,19 @@ export class AuthenticationService {
     )
   }
 
+  getDecodedToken(): any {
+    const token = this.getToken();
+    if (token) {
+      return jwt_decode.jwtDecode(token);
+    }
+    return null;
+  }
+
+  getIdUsuario(): String {
+    this.idUsuario = this.getDecodedToken()._id;
+    
+    return this.idUsuario;
+  }
 
   logout() {
     this.token = '';
@@ -58,7 +73,7 @@ export class AuthenticationService {
     this.token = token;
   }
 
-  private getToken(): string | null {
+  public getToken(): string | null {
     if (!this.token) {
       this.token = localStorage.getItem("accessToken");
     }

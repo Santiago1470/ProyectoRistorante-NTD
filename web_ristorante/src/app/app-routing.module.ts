@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { InicioComponent } from './components/inicio/inicio.component';
 import { GestionmenuComponent } from './components/gestionmenu/gestionmenu.component';
+import { ReservacionComponent } from './components/reservacion/reservacion.component';
 
 const routes: Routes = [
   {path: '',component: InicioComponent},
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path: 'menu',component: MenuComponent},
   {path: 'inicio',component: InicioComponent},
   {path: 'gestionmenu',component: GestionmenuComponent},
+  {path: 'reservacion', component: ReservacionComponent}
 ];
 
 @NgModule({

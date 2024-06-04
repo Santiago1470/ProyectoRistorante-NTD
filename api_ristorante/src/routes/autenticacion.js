@@ -39,7 +39,7 @@ router.post("/login", async (req, res) => {
     });
 });
 
-router.get('/getUsers', admin, async (req, res) => {
+router.get('/getUsers'/*, admin*/, async (req, res) => {
     try {
         const usuario = await usuarios.find();
 
