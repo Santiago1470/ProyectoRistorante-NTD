@@ -30,7 +30,7 @@ export class MenuristoranteService {
   createPlato(token: string, platoData: any): Observable<any> {
     return this.http.post(`${this.apiUri}/platos`, platoData, {
       ...this.httpOptions,
-      headers: this.httpOptions.headers.append('accessToken', token)
+      headers: this.httpOptions.headers.append('access-token', token)
     });
   }
 
@@ -52,7 +52,7 @@ export class MenuristoranteService {
   deletePlato(token: string, platoId: string): Observable<any> {
     return this.http.delete(`${this.apiUri}/platos/${platoId}`, {
       ...this.httpOptions,
-      headers: this.httpOptions.headers.append('accessToken', token)
+      headers: this.httpOptions.headers.append('access-token', token)
     });
   }
 }

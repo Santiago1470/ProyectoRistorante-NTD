@@ -13,7 +13,9 @@ export class GestionmenuComponent implements OnInit {
   categoriasList: any = [];
   platosXCategoriaList: any = [];
   modalAbierto = false;
+  modalAbiertoAgregar = false;
   platoEditado: any = null;
+  platoAgregado: any = null;
   tokenadmin: string = this.authenticationService.getToken() || "";
 
   constructor(
@@ -52,6 +54,11 @@ export class GestionmenuComponent implements OnInit {
     );
   }
 
+  abrirModalAgregar() {
+    this.platoAgregado = { nombre: '', descripcion: '', precio: null, imagen: '' };
+    this.modalAbiertoAgregar = true;
+  }
+
   abrirModal(plato: any) {
     this.platoEditado = { ...plato };
     this.modalAbierto = true;
@@ -63,7 +70,13 @@ export class GestionmenuComponent implements OnInit {
     this.platoEditado = null;
   }
 
+  cerrarModalAgregar() {
+    this.modalAbiertoAgregar = false; // Utiliza modalAbiertoAgregar en lugar de modalAbierto
+    this.platoAgregado = null;
+}
+
   guardarPlato() {
+    console.log(this.platoEditado)
     const token = this.authenticationService.getToken();
     if (token === null) {
       this.toastr.error('Error: Token de autenticación no encontrado');
@@ -85,4 +98,55 @@ export class GestionmenuComponent implements OnInit {
         }
       );
   }
+
+  guardarPlatoAgregar() {
+    console.log(this.platoAgregado)
+    const token = this.authenticationService.getToken();
+    if (token === null) {
+      this.toastr.error('Error: Token de autenticación no encontrado');
+      return;
+    }
+  
+    this.menuristoranteService.createPlato(this.tokenadmin, this.platoAgregado)
+      .subscribe(
+        (response: any) => {
+          console.log('Plato creado:', response);
+          this.getAllPlatos();
+          this.cerrarModalAgregar();
+        },
+        (error: any) => {
+          console.error('Error al crear el plato:', error);
+          this.toastr.error('Error al crear el plato');
+        }
+      );
+  }
+  
+  eliminarPlato() {
+    const token = this.authenticationService.getToken();
+    if (token === null) {
+        this.toastr.error('Error: Token de autenticación no encontrado');
+        return;
+    }
+  
+    const platoId = this.platoEditado._id;
+  
+    this.menuristoranteService.deletePlato(this.tokenadmin, platoId)
+      .subscribe(
+        (response: any) => {
+          console.log('Plato eliminado:', response);
+          this.getAllPlatos();
+          this.cerrarModal();
+        },
+        (error: any) => {
+          console.error('Error al eliminar el plato:', error);
+          this.toastr.error('Error al eliminar el plato');
+        }
+      );
+}
+
+
+
+
+
+
 }
