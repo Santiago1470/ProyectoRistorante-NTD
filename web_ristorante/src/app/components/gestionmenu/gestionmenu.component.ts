@@ -171,21 +171,20 @@ export class GestionmenuComponent implements OnInit {
     }
   }
 
-  agregarAlCarrito(platoId: String) {
+  agregarAlCarrito() {
     const token = this.authenticationService.getToken();
     if (token === null) {
       this.toastr.error('Error: Token de autenticación no encontrado');
       return;
     }
     const pedido = {
-      platoId,
+      plato: this.platoCarrito._id,
       estado: 'pendiente',
       cantidad: this.cantidad
     };
     this.pedidoService.newPedido(token, pedido)
       .subscribe(
         (response: any) => {
-
           this.cerrarModal();
         },
         (error: any) => {

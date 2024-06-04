@@ -48,15 +48,25 @@
                                             </svg>
 
                                         </a>
-                                        <a *ngIf="authenticationService.esCliente() || !authenticationService.isLoggedIn()"
-                                            [routerLink]="authenticationService.isLoggedIn() ? '': '/login'"
-                                            (click)="authenticationService.isLoggedIn() && abrirModalCarrito(plato)">
+                                        <!-- Para validar si ha iniciado sesión -->
+                                        <a *ngIf="!authenticationService.isLoggedIn()" [routerLink]="'/login'">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
                                                 fill="currentColor" class="bi bi-cart-fill" viewBox="0 0 16 16">
                                                 <path
                                                     d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
                                             </svg>
                                         </a>
+
+                                        <!-- Para validar si es cliente -->
+                                        <a *ngIf="authenticationService.isLoggedIn() && authenticationService.esCliente()"
+                                            (click)="abrirModalCarrito(plato)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                                fill="currentColor" class="bi bi-cart-fill" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                            </svg>
+                                        </a>
+
 
                                     </div>
                                 </div>
@@ -193,16 +203,16 @@
                         <label for="cantidad">Cantidad</label>
                         <div class="input-group">
                             <button class="btn btn-outline-secondary" type="button"
-                                (click)="restarCantidad()">-</button>
+                                (click)="disminuirCantidad()">-</button>
                             <input type="number" class="form-control" [(ngModel)]="cantidad" name="cantidad">
-                            <button class="btn btn-outline-secondary" type="button" (click)="sumarCantidad()">+</button>
+                            <button class="btn btn-outline-secondary" type="button"
+                                (click)="aumentarCantidad()">+</button>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="cerrarModalAgregar()">Cancelar</button>
-                    <button type="button" class="btn btn-primary"
-                        (click)="agregarAlCarrito({{ platoCarrito._id }})">Guardar</button>
+                    <button type="button" class="btn btn-secondary" (click)="cerrarModalCarrito()">Cancelar</button>
+                    <button type="button" class="btn btn-primary" (click)="agregarAlCarrito()">Guardar</button>
                 </div>
             </div>
         </div>
