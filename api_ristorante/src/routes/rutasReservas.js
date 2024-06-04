@@ -23,9 +23,9 @@ router.post("/reservas", verifyToken, async (req, res) => {
 });
 
 router.get("/reservas/:userId", verifyToken, async (req, res) => {
-    const {id} = req.user;
+    const {userId} = req.params;
     try {
-        const reservasUsuario = await reservas.find({ usuario: id }).populate('usuario');
+        const reservasUsuario = await reservas.findById({ usuario: userId }).populate('usuario');
         res.json(reservasUsuario);
     } catch (error) {
         res.status(500).json({ message: error });
