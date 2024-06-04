@@ -42,9 +42,10 @@ export class MenuristoranteService {
   }
 
   getPlatoById(token: string, platoId: string): Observable<any> {
+    console.log(`${this.apiUri}/platos/${platoId}`)
     return this.http.get(`${this.apiUri}/platos/${platoId}`, {
       ...this.httpOptions,
-      headers: this.httpOptions.headers.append('accessToken', token)
+      headers: this.httpOptions.headers.append('access-token', token)
     });
   }
 
