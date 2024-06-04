@@ -15,6 +15,7 @@ export class AuthenticationService {
   private token: string | null = '';
   private autenticacion: boolean = false;
   private idUsuario: String = "";
+  private rolUsuario: string = '';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -87,5 +88,24 @@ export class AuthenticationService {
       this.autenticacion = true;
     }
     return this.autenticacion;
+  }
+
+  getRolUsuario(): string | null {
+    const token = this.getToken();
+    if (!token) {
+      return null; 
+    }
+    const decodedToken: any = this.getDecodedToken();
+    return decodedToken?.rol || null;
+  }
+
+  esAdministrador(): boolean {
+    const rol = this.getRolUsuario();
+    return rol === 'administrador';
+  }
+
+  esCliente(): boolean {
+    const rol = this.getRolUsuario();
+    return rol === 'cliente';
   }
 }

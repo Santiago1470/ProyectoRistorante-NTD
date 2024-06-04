@@ -49,7 +49,7 @@ router.post('/carrito/agregar', verifyToken, async (req, res) => {
         }
         const pedido = pedidos({
             usuario: id,
-            platos: platos.map(({ plato, estado }) => ({ plato, estado }))
+            platos: platos.map(({ plato, estado, cantidad }) => ({ plato, estado, cantidad }))
         });
         await pedido.save();
         user.carrito.push(pedido._id);

@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MenuristoranteService } from 'src/app/services/menuristorante.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-gestionmenu',
@@ -17,7 +18,8 @@ export class GestionmenuComponent {
   constructor(private menuristoranteService: MenuristoranteService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private toastr: ToastrService) {
+    private toastr: ToastrService,
+    public authenticationService: AuthenticationService) {
     
 
   }
