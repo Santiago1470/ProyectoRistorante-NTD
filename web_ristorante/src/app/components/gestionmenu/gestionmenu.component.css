@@ -32,3 +32,15 @@
     width: 100%;
     height: 100%;
 }
+.food_section .btn-box a {
+    background-color:#d2c4a5;
+    color: #000;
+}
+.food_section .filters_menu li.active {
+    background-color:#d2c4a5;
+    color: #000;
+}
+.food_section .box .options a { 
+    width: 18px;
+    height: 18px;
+}

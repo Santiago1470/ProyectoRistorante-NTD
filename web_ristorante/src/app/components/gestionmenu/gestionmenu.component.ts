@@ -14,6 +14,7 @@ export class GestionmenuComponent {
   platosList: any = [];
   categoriasList: any = [];
   platosXCategoriaList: any = [];
+  
 
   constructor(private menuristoranteService: MenuristoranteService,
     private formBuilder: FormBuilder,
@@ -54,6 +55,5 @@ export class GestionmenuComponent {
       }
     );
   }
-
 
 }

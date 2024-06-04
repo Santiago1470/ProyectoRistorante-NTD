@@ -1,0 +1,42 @@
+.hero_area{
+    background-image: url(../../../assets/images/back2.jpg);
+    z-index: 1;
+}
+ 
+ h1 {
+    font-size: 2.5em;
+    text-transform: uppercase;
+    letter-spacing: 10px;
+    color: #d2c4a5;
+ }
+ 
+ p {
+    font-size: 1.2em;
+    color: #d2c4a5;
+ }
+ 
+ .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px;
+    padding: 20px;
+    background-color: #d2c4a5;
+    color: #000;
+ }
+ 
+ .item img {
+    width: 100px;
+    height: 100px;
+    background-color: #000;
+ }
+ 
+ .item h3 {
+    font-size: 1.2em;
+    color: #000;
+ }
+ 
+ .item p {
+    font-size: 1em;
+    color: #000;
+ }
