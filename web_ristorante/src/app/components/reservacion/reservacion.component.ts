@@ -12,6 +12,8 @@ import { ReservacionService } from 'src/app/services/reservacion.service';
 export class ReservacionComponent {
   reservacionesList: any = [];
   mostrarFormulario: boolean = false;
+  autenticado: boolean = this.authenticationService.isLoggedIn();
+  reservacionesActivas: boolean = false;
   // reserva: any = {};
   // modificar: boolean = false;
   // formulario: FormGroup = this.formBuilder.group({
@@ -29,16 +31,27 @@ export class ReservacionComponent {
     }
 
     ngOnInit() {
-      this.getAllReservaciones();
+      console.log(this.autenticado)
+      if(this.autenticado){
+        this.getAllReservaciones();
+      } else {
+        this.mostrarFormulario = true;
+      }
       
     }
 
     getAllReservaciones() {
-      console.log(this.reservacionesList)
       this.reservacionService.getReservaciones().subscribe(
         (data: {}) => {
           this.reservacionesList = data
-          console.log(data)
+          console.log(this.reservacionesList)
+          if(this.reservacionesList.length > 0){
+            this.mostrarFormulario = false;
+            this.reservacionesActivas = true;
+          } else {
+            this.mostrarFormulario = true;
+            this.reservacionesActivas = false;
+          }
         }
       );
     }
@@ -81,5 +94,11 @@ export class ReservacionComponent {
           window.location.reload();
         }
       )
+    }
+
+    verificarAutenticacion() {
+      if(!this.autenticado){
+        this.router.navigate(['/login']);
+      }
     }
 }

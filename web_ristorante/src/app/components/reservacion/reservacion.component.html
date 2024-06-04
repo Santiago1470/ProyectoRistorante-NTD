@@ -39,10 +39,13 @@
                                 <input type="time" class="form-control" name="hora" placeholder="Hora" ngModel>
                             </div>
                             <div class="btn_box">
-                                <button type="submit" class="btn btn-warning" >
+                                <button type="button" class="btn btn-warning" *ngIf="!autenticado" (click)="verificarAutenticacion()">
                                     Reservar
                                 </button>
-                                <button type="button" class="btn btn-danger" (click)="cancelar()">
+                                <button type="submit" class="btn btn-warning" *ngIf="autenticado">
+                                    Reservar
+                                </button>
+                                <button type="button" class="btn btn-danger" *ngIf="autenticado && reservacionesActivas" (click)="cancelar()">
                                     Cancelar
                                 </button>
                             </div>

@@ -13,6 +13,7 @@ export class ReservacionService {
   apiUri = '/Ciprianis';
   token: String = this.authenticationService.getToken() || "";
   idUsuario = this.authenticationService.getIdUsuario();
+  autenticado: boolean = this.authenticationService.isLoggedIn();
   constructor(private httpClient: HttpClient, private authenticationService: AuthenticationService) { }
 
   getReservaciones(): Observable<any> {
@@ -35,7 +36,7 @@ export class ReservacionService {
       
     }).pipe(
       catchError(error => {
-        alert("Parece que ya tiene una reservación para ese día.")
+        alert("Parece que ya tiene una reservación para ese día o el formulario no está debidamente diligenciado.")
         return throwError(error);
       }),
       tap((res: Jwtres) => {
