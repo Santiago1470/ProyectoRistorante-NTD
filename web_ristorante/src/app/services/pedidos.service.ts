@@ -34,4 +34,14 @@ export class PedidosService {
         }
       });
   }
+  deletePedido( pedidoId: string, platoId:string): Observable<any> {
+    return this.http.delete<any>(
+      `${this.apiUri}/carrito/${pedidoId}/plato/${platoId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'access-token': `${this.token}`
+        }
+      });
+  }
 }

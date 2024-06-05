@@ -81,6 +81,16 @@ export class CarritoComponent implements OnInit {
     );
   }
   
+  eliminarPlato(platoId: string) {
+    this.pedidosService.deletePedido(this.pedidosList[0]._id, platoId).subscribe(
+      () => {
+        console.log('Plato eliminado correctamente');
+      },
+      error => {
+        console.error('Error al eliminar el plato:', error);
+      }
+    );
+  }
   
   
 
