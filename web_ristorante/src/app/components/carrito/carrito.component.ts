@@ -52,7 +52,7 @@ export class CarritoComponent implements OnInit {
   
     forkJoin(observables).subscribe(
       (detalles: any[]) => {
-        console.log("Detalles de platos recibidos:", detalles);
+        // console.log("Detalles de platos recibidos:", detalles);
   
         const detallesMap = new Map<string, any>();
         detalles.forEach(detalle => {
@@ -72,7 +72,7 @@ export class CarritoComponent implements OnInit {
             }
           });
   
-          console.log("Detalles de platos para el pedido:", pedido.detallesPlatos);
+          // console.log("Detalles de platos para el pedido:", pedido.detallesPlatos);
         });
       },
       error => {
