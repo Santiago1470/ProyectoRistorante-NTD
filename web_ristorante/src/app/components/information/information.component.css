@@ -2,3 +2,7 @@
     background-image: url(../../../assets/images/back2.jpg);
     z-index: 1;
 }
+.about_section {
+    background: transparent;
+    color: #ffffff;
+  }
