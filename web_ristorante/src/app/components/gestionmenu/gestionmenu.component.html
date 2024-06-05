@@ -1,7 +1,4 @@
 <div class="hero_area">
-    <div class="bg-box">
-        <img src="../../../assets/images/back2.jpg" alt="">
-    </div>
     <app-header></app-header>
     <section class="food_section layout_padding-bottom dark-section">
         <div class="container">
@@ -12,14 +9,18 @@
             </div>
 
             <ul class="filters_menu">
-                <li class="active">All</li>
+                <li class="active" (click)="getAllPlatos()">All</li>
                 <li (click)="consultarPlatosPorCategoria('Entrada')">Entrada</li>
                 <li (click)="consultarPlatosPorCategoria('Plato principal')">Principal</li>
                 <li (click)="consultarPlatosPorCategoria('Postre')">Postre</li>
                 <li (click)="consultarPlatosPorCategoria('Bebida')">Bebida</li>
-
             </ul>
-            <!--Aquí se listan los platos del menú-->
+
+            <div >
+                <button  *ngIf="authenticationService.esAdministrador()" class="color"
+                        (click)="abrirModalAgregar()">Agregar Plato</button>
+            </div>
+            <!-- Aquí se listan los platos del menú -->
             <div class="filters-content">
                 <div class="row grid">
 
@@ -27,7 +28,7 @@
                         <div class="box">
                             <div>
                                 <div class="img-box">
-                                    <img src="{{plato.imagen}}" alt="">
+                                    <img src="{{plato.imagen}}" width="100%" height="100%">
                                 </div>
                                 <div class="detail-box">
                                     <h5>
@@ -37,31 +38,41 @@
                                         {{plato.descripcion}}
                                     </p>
                                     <div class="options">
-                                        <h6>
-                                            ${{plato.precio}}
-                                        </h6>
-                                        <a *ngIf="authenticationService.esAdministrador()" href="">
+                                        <h6>${{plato.precio}}</h6>
+                                        <a *ngIf="authenticationService.esAdministrador()" href="#"
+                                            (click)="abrirModal(plato)">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
                                                 <path
                                                     d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001" />
                                             </svg>
+
                                         </a>
-                                        <a *ngIf="authenticationService.esCliente() || !authenticationService.isLoggedIn()"
-                                            [routerLink]="authenticationService.isLoggedIn() ? '/inicio' : '/login'"
-                                            class="nav-link">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        <!-- Para validar si ha iniciado sesión -->
+                                        <a *ngIf="!authenticationService.isLoggedIn()" [routerLink]="'/login'">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
                                                 fill="currentColor" class="bi bi-cart-fill" viewBox="0 0 16 16">
                                                 <path
                                                     d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
                                             </svg>
                                         </a>
+
+                                        <!-- Para validar si es cliente -->
+                                        <a *ngIf="authenticationService.isLoggedIn() && authenticationService.esCliente()"
+                                            (click)="abrirModalCarrito(plato)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                                fill="currentColor" class="bi bi-cart-fill" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                            </svg>
+                                        </a>
+
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="btn-box">
@@ -71,6 +82,142 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal para editar platos -->
+    <div class="contenedor-editar" *ngIf="modalAbierto">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Plato</h5>
+                    <button type="button" class="close" (click)="cerrarModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" [(ngModel)]="platoEditado.nombre"
+                                name="nombre">
+                        </div>
+                        <div class="form-group">
+                            <label for="descripcion">Descripción</label>
+                            <textarea class="form-control" id="descripcion" [(ngModel)]="platoEditado.descripcion"
+                                name="descripcion"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="precio">Precio</label>
+                            <input type="number" class="form-control" id="precio" [(ngModel)]="platoEditado.precio"
+                                name="precio">
+                        </div>
+                        <div class="form-group">
+                            <label for="imagen">Imagen</label>
+                            <input type="text" class="form-control" id="imagen" [(ngModel)]="platoEditado.imagen"
+                                name="imagen">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cancelar</button>
+                    <button type="button" class="btn btn-primary" (click)="guardarPlato()">Guardar</button>
+                    <button type="button" class="btn btn-danger" (click)="eliminarPlato()">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /////////////////////////////////////////////////////////////////-->
+
+
+    <!-- Modal para agregar platos -->
+    <div class="contenedor-agregar" *ngIf="modalAbiertoAgregar">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Plato</h5>
+                    <button type="button" class="close" (click)="cerrarModalAgregar()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" [(ngModel)]="platoAgregado.nombre"
+                                name="nombre">
+                        </div>
+                        <div class="form-group">
+                            <label for="descripcion">Descripción</label>
+                            <textarea class="form-control" id="descripcion" [(ngModel)]="platoAgregado.descripcion"
+                                name="descripcion"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="precio">Precio</label>
+                            <input type="number" class="form-control" id="precio" [(ngModel)]="platoAgregado.precio"
+                                name="precio">
+                        </div>
+                        <div class="form-group">
+                            <label for="imagen">Imagen</label>
+                            <input type="text" class="form-control" id="imagen" [(ngModel)]="platoAgregado.imagen"
+                                name="imagen">
+                        </div>
+                        <div class="form-group">
+                            <label for="categoria">Categoría</label>
+                            <select class="form-control" id="categoria" [(ngModel)]="platoAgregado.categoria"
+                                name="categoria">
+                                <option value="Entrada">Entrada</option>
+                                <option value="Plato principal">Plato principal</option>
+                                <option value="Postre">Postre</option>
+                                <option value="Bebida">Bebida</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ingredientes">Ingredientes</label>
+                            <input type="text" class="form-control" id="ingredientes"
+                                [(ngModel)]="platoAgregado.ingredientes" name="ingredientes">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="cerrarModalAgregar()">Cancelar</button>
+                    <button type="button" class="btn btn-primary" (click)="guardarPlatoAgregar()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="contenedor-agregar" *ngIf="modalAbiertoCarrito">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar</h5>
+                    <button type="button" class="close" (click)="cerrarModalCarrito()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="imagen">Imagen</label>
+                        <img src="{{ platoCarrito.imagen }}" class="img-fluid" alt="Imagen del plato">
+                    </div>
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad</label>
+                        <div class="input-group">
+                            <button class="btn btn-outline-secondary" type="button"
+                                (click)="disminuirCantidad()">-</button>
+                            <input type="number" class="form-control" [(ngModel)]="cantidad" name="cantidad">
+                            <button class="btn btn-outline-secondary" type="button"
+                                (click)="aumentarCantidad()">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="cerrarModalCarrito()">Cancelar</button>
+                    <button type="button" class="btn btn-primary" (click)="agregarAlCarrito()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <!-- footer section -->

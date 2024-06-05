@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -6,93 +6,53 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class MenuristoranteService {
-  apiUri = '/Ciprianis';
+  private apiUri = '/Ciprianis';
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 
   constructor(private http: HttpClient) { }
 
   getAllPlatosData(): Observable<any> {
+    return this.http.get(`${this.apiUri}/platos`, this.httpOptions);
+  }
 
-    return this.http.get(this.apiUri +
-      "/platos", {
-      headers:
-      {
-        'Content-Type': 'application/json'
-      }
+  getAllCategorias(): Observable<any> {
+    return this.http.get(`${this.apiUri}/categorias`, this.httpOptions);
+  }
+
+  getAllplatosXCategoriaData(categoria: string): Observable<any> {
+    return this.http.get(`${this.apiUri}/platosXCategorias/${categoria}`, this.httpOptions);
+  }
+
+  createPlato(token: string, platoData: any): Observable<any> {
+    return this.http.post(`${this.apiUri}/platos`, platoData, {
+      ...this.httpOptions,
+      headers: this.httpOptions.headers.append('access-token', token)
     });
   }
 
-  getAllCategoriasData
-    (): Observable<any> {
-
-    return this.http.get(this.apiUri + "/categorias", {
-      headers:
-      {
-        'Content-Type': 'application/json'
-      }
+  updatePlato(token: string, platoId: string, platoData: any): Observable<any> {
+    return this.http.put(`${this.apiUri}/platos/${platoId}`, platoData, {
+      ...this.httpOptions,
+      headers: this.httpOptions.headers.append('access-token', token)
     });
   }
 
-
-  getAllplatosXCategoriaData
-    (categoria: string): Observable<any> {
-    console.log("categoria en servicio "
-      + categoria
-    )
-    return this.http.get(this.apiUri + "/platosXCategorias" + "/" + categoria, {
-      
-      headers:
-      {
-        'Content-Type': 'application/json',
-        
-      }
+  getPlatoById(token: string, platoId: string): Observable<any> {
+    console.log(`${this.apiUri}/platos/${platoId}`)
+    return this.http.get(`${this.apiUri}/platos/${platoId}`, {
+      ...this.httpOptions,
+      headers: this.httpOptions.headers.append('access-token', token)
     });
   }
 
-  newAnimal(token: any, data: any): Observable<any> {
-    return this.http.post<any>(
-      this.apiUri,
-      data,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          accessToken: `${token}`
-        }
-      });
+  deletePlato(token: string, platoId: string): Observable<any> {
+    return this.http.delete(`${this.apiUri}/platos/${platoId}`, {
+      ...this.httpOptions,
+      headers: this.httpOptions.headers.append('access-token', token)
+    });
   }
-
-  updateAnimal(token: any, id: any, data: any): Observable<any> {
-    console.log(data)
-    return this.http.put<any>(
-      this.apiUri + '/' + id,
-      data,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          accessToken: `${token}`
-        }
-      });
-  }
-
-  getOneAnimal(token: any, id: any): Observable<any> {
-    return this.http.get<any>(
-      this.apiUri + '/' + id,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          accessToken: `${token}`
-        }
-      });
-  }
-
-  deleteAnimal(token: any, id: any) {
-    return this.http.delete<any>(
-      this.apiUri + "/" + id,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          accessToken: `${token}`
-        }
-      });
-  }
-
 }

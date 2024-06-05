@@ -34,7 +34,7 @@
                 <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
               </svg>
             </a>
-            <a class="cart_link" href="#">
+            <a class="cart_link" href="/carrito">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-fill"
                 viewBox="0 0 16 16">
                 <path
@@ -46,13 +46,11 @@
                 <i class="fa fa-search" aria-hidden="true"></i>
               </button>
             </form>
-            <a href="/login" class="order_online">
-              Pedir comida
-            </a>
+            
             <a *ngIf="autenticacion" (click)="logout()" href="/inicio" class="order_online">
               Cerrar Sesión
             </a>
-            <a *ngIf="!autenticacion" href="/login" class="order_online">
+            <a *ngIf="!autenticacion" href="/login" class="order_online" >
               Iniciar Sesión
             </a>
           </div>

@@ -10,12 +10,13 @@ const admin = require('./administrador');
 router.get('/carrito/mis-pedidos', verifyToken, async (req, res) => {
     const usuarioId = req.user;
     try {
-        const misPedidos = await pedidos.find({ usuario: usuarioId._id }).populate('platos').exec();
+        const misPedidos = await pedidos.find({ usuario: usuarioId }).populate('platos').exec();
         res.json(misPedidos);
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener los pedidos del usuario' });
     }
 });
+
 
 // Obtener todos los pedidos (para administradores)
 router.get('/carrito', admin, async (req, res) => {
@@ -34,28 +35,37 @@ router.get('/carrito', admin, async (req, res) => {
 
 // Agregar un pedido al carrito del usuario
 router.post('/carrito/agregar', verifyToken, async (req, res) => {
-    const {id} = req.user;
+    const { _id } = req.user;
     const { platos } = req.body;
-    
+
     try {
-        const user = await usuarios.findById(id);
+        console.log(_id)
+        const user = await usuarios.findById(_id);
         if (!user) {
             return res.status(404).json({ error: 'El usuario no existe' });
         }
-        const platosIds = platos.map(plato => plato.plato);
+        // const platosIds = platos.map(plato => plato.plato);
+        const platosIds = platos.plato;
         const platosExistenCount = await platosSchema.countDocuments({ _id: { $in: platosIds } });
         if (platosExistenCount !== platosIds.length) {
             return res.status(404).json({ error: 'Algunos platos no existen' });
         }
         const pedido = pedidos({
-            usuario: id,
-            platos: platos.map(({ plato, estado, cantidad }) => ({ plato, estado, cantidad }))
+            usuario: _id,
+            platos: [
+                {
+                    plato: platos.plato,
+                    estado: platos.estado,
+                    cantidad: platos.cantidad
+                }
+            ]
         });
         await pedido.save();
         user.carrito.push(pedido._id);
         await user.save();
         res.status(200).json({ message: 'Pedido agregado al carrito correctamente' });
     } catch (error) {
+        console.error(error)
         res.status(500).json({ error: 'Error al agregar el pedido al carrito' });
     }
 });
