@@ -56,7 +56,12 @@ export class AuthenticationService {
   }
 
   getIdUsuario(): String {
-    this.idUsuario = this.getDecodedToken()._id;
+    if(this.getDecodedToken() == null){
+      this.idUsuario = "";
+    } else {
+      this.idUsuario = this.getDecodedToken()._id;
+    }
+    
     
     return this.idUsuario;
   }

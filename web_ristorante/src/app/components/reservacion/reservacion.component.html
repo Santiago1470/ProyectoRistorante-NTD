@@ -11,17 +11,101 @@
                     Reservaciones
                 </h2>
             </div>
-            <div class="contenedor-reservaciones">
-                <div class="card">
-                    <h5 class="card-header titulo-reserva">Confirmada</h5>
+            <div class="contenedor-btnReservar" *ngIf="!mostrarFormulario">
+                <input id="btnReservar" class="btn btn-success btnReservar" type="button" value="Reservar ahora" (click)="mostrarForm()" />
+            </div>
+            <div *ngIf="mostrarFormulario">
+                <div class="heading_container">
+                    <h2>
+                      Tu reservación:
+                    </h2>
+                  </div>
+                <div class="contenedor-reservar">
+                    <!-- <div class="form_container" *ngIf="!mostrarFormModificar">
+                        <form class="reservacion" (ngSubmit)="reservar(formReserva)" #formReserva="ngForm">
+                            <div>
+                                <input type="text" class="form-control" name="nombreCliente" placeholder="Tu nombre" ngModel>
+                            </div>
+                            <div>
+                                <input type="number" class="form-control" name="numeroPersonas" placeholder="Cantidad de personas" min="1" step="1" ngModel>
+                            </div>
+                            <div>
+                                <input type="number" class="form-control" name="mesa" placeholder="Mesa" min="1" step="1" ngModel>
+                            </div>
+                            <div>
+                                <input type="date" class="form-control" name="fecha" ngModel>
+                            </div>
+                            <div>
+                                <input type="time" class="form-control" name="hora" placeholder="Hora" ngModel>
+                            </div>
+                            <div class="btn_box">
+                                <button type="button" class="btn btn-warning" *ngIf="!autenticado" (click)="verificarAutenticacion()">
+                                    Reservar
+                                </button>
+                                <button type="submit" class="btn btn-warning" *ngIf="autenticado">
+                                    Reservar
+                                </button>
+                                <button type="button" class="btn btn-danger" *ngIf="autenticado && reservacionesActivas" (click)="cancelar()">
+                                    Cancelar
+                                </button>
+                            </div>
+                        </form>
+                    </div> -->
+                    <div class="form_container" *ngIf="mostrarFormulario">
+                        <form class="reservacion" (ngSubmit)="reservar(formReserva)" #formReserva="ngForm">
+                            <div>
+                                <input type="text" class="form-control" name="nombreCliente" placeholder="Tu nombre" [(ngModel)]="nombreCliente" required>
+                            </div>
+                            <div>
+                                <input type="number" class="form-control" name="numeroPersonas" placeholder="Cantidad de personas" min="1" step="1" [(ngModel)]="numeroPersonas" required>
+                            </div>
+                            <div>
+                                <input type="number" class="form-control" name="mesa" placeholder="Mesa" min="1" step="1" [(ngModel)]="mesa" required>
+                            </div>
+                            <div>
+                                <input type="date" class="form-control" name="fecha" [(ngModel)]="fecha" required>
+                            </div>
+                            <div>
+                                <input type="time" class="form-control" name="hora" placeholder="Hora" [(ngModel)]="hora" required>
+                            </div>
+                            <div class="btn_box">
+                                <button type="button" class="btn btn-warning" *ngIf="!autenticado" (click)="verificarAutenticacion()">
+                                    Reservar
+                                </button>
+                                <button type="submit" class="btn btn-warning" *ngIf="autenticado && !mostrarFormModificar">
+                                    Reservar
+                                </button>
+                                <button type="button" class="btn btn-warning" *ngIf="autenticado && mostrarFormModificar" (click)="modificarReserva(formReserva)">
+                                    Modificar
+                                </button>
+                                <button type="button" class="btn btn-danger" *ngIf="autenticado && reservacionesActivas" (click)="cancelar()">
+                                    Cancelar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="contenedor-mapa">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24878389.22811536!2d-33.28187710408188!3d40.432930899999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x477927638fc5579b%3A0x379323e20011b705!2sRistorante%20Villa%20Cipriani!5e0!3m2!1ses!2sco!4v1717475177402!5m2!1ses!2sco"
+                            width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="contenedor-reservaciones" *ngIf="!mostrarFormulario">
+                <div class="card" *ngFor="let reservacion of reservacionesList">
+                    <h5 class="card-header titulo-reserva">{{reservacion.estado}}</h5>
                     <div class="card-body">
-                      <!-- <h5 class="card-title">Cliente: <span class="nombre-reserva">Prueba1</span></h5> -->
-                      <p class="card-text">Cliente: <span>Prueba 1</span></p>
-                      <p class="card-text">Mesa: <span>10</span></p>
-                      <p class="card-text">Número de personas: <span>3</span></p>
-                      <p class="card-text">Fecha: <span>03/06/2024</span></p>
-                      <p class="card-text">Hora: <span>4:45 p.m.</span></p>
-                      <a href="#" class="btn btn-primary">Cancelar</a>
+                        <!-- <h5 class="card-title">Cliente: <span class="nombre-reserva">Prueba1</span></h5> -->
+                        <p class="card-text">Cliente: <span>{{reservacion.nombreCliente.nombre}}</span></p>
+                        <p class="card-text">Mesa: <span>{{reservacion.mesa}}</span></p>
+                        <p class="card-text">Número de personas: <span>{{reservacion.numeroPersonas}}</span></p>
+                        <p class="card-text">Fecha: <span>{{reservacion.fecha}}</span></p>
+                        <p class="card-text">Hora: <span>{{reservacion.hora}}</span></p>
+                        <a href="#" class="btn btn-primary btnModificar"
+                            *ngIf="reservacion.estado == 'Confirmada' || reservacion.estado == 'Pendiente'" (click)="getReservacion(reservacion._id)">Modificar</a>
+                        <a href="#" class="btn btn-danger"
+                            *ngIf="reservacion.estado == 'Confirmada' || reservacion.estado == 'Pendiente'" (click)="cancelarReserva(reservacion._id)">Cancelar</a>
                     </div>
                 </div>
             </div>

@@ -1,21 +1,59 @@
+.bg-box {
+    z-index: -1;
+}
+
 .dark-section {
-    background-color: #333; 
+    /* background-color: #333;  */
     color: #fff; 
 }
 .text-dark {
     color: black; 
 }
 
+.contenedor-btnReservar {
+    display: flex;
+    flex-direction: row;
+}
+
+.heading_container {
+    margin-top: 20px;
+}
+
+.contenedor-reservar {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    column-gap: 20px;
+}
+
+.form_container {
+    width: 50%;
+}
+
+.form_container form div {
+    margin-bottom: 10px;
+}
+
+.btn_box button {
+    color: white;
+}
+
+.btn_box .btn-danger {
+    margin-left: 10px;
+}
+
 .contenedor-reservaciones {
+    margin-top: 20px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     column-gap: 20px;
+    row-gap: 20px;
     justify-content: center;
 }
 
 .card {
-    margin-top: 30px;
     border-color: rgb(130, 130, 130);
 }
 
@@ -25,4 +63,8 @@
 
 .card-body {
     color: black;
+}
+
+.btnModificar {
+    margin-right: 10px;
 }
