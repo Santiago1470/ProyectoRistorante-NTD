@@ -34,29 +34,39 @@ router.get("/reservas/:userId", verifyToken, async (req, res) => {
     }
 });
 
-router.get("/reservas", (req, res) => {
-    console.log("en todas las reservas")
+router.get("/reservas", verifyToken, async (req, res) => {
+    // console.log("en todas las reservas")
+    // reservas.find()
+    //     .then((data) => res.json(data))
+    //     .catch((error) => res.status(500).json({ message: error }));
     reservas.find()
-        .then((data) => res.json(data))
-        .catch((error) => res.status(500).json({ message: error }));
+    .populate('nombreCliente') // Esto realiza la unión entre la reserva y el cliente
+    .then((data) => res.json(data))
+    .catch((error) => res.status(500).json({ message: error.message }));
 });
 
 router.get("/reservas/unidad/:id", verifyToken, async (req, res) => {
-    // const { id } = req.params;
-    // console.log("HOLA!!")
+    const { id } = req.params;
+    console.log("HOLA!!")
     // reservas.findById(id)
     //     .then((data) => res.json(data))
     //     .catch((error) => res.status(500).json({ message: error }));
-    const {id} = req.params;
-    const {_id} = req.user;
-    console.log("HOLA")
-    try {
-        const reservasUsuario = await reservas.find({ _id: id, nombreCliente: _id}).populate('nombreCliente');
-        res.json(reservasUsuario);
-    } catch (error) {
-        console.error(error)
-        res.status(500).json({ message: error });
-    }
+
+    reservas.findById(id)
+    .populate('nombreCliente') // Popula los datos del cliente en la reserva
+    .then((data) => res.json(data))
+    .catch((error) => res.status(500).json({ message: error.message }));
+
+    // const {id} = req.params;
+    // const {_id} = req.user;
+    // console.log("HOLA")
+    // try {
+    //     const reservasUsuario = await reservas.find({ _id: id, nombreCliente: _id}).populate('nombreCliente');
+    //     res.json(reservasUsuario);
+    // } catch (error) {
+    //     console.error(error)
+    //     res.status(500).json({ message: error });
+    // }
 });
 
 router.put("/reservas/:id", verifyToken, (req, res) => {
