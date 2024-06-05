@@ -25,12 +25,12 @@ export class PedidosService {
 
   newPedido(token: any, data: any): Observable<any> {
     return this.http.post<any>(
-      this.apiUri,
+      `${this.apiUri}/carrito/agregar`,
       data,
       {
         headers: {
           'Content-Type': 'application/json',
-          'access-token': `${token}`
+          'access-token': `${this.token}`
         }
       });
   }

@@ -39,9 +39,14 @@ export class CarritoComponent implements OnInit {
 
   obtenerDetallesPlatos() {
     const observables: Observable<any>[] = [];
+    const platosIds: string[] = [];
+  
     this.pedidosList.forEach((pedido: any) => {
       pedido.platos.forEach((plato: any) => {
-        observables.push(this.platosService.getPlatoById(`${this.token}`, plato._id));
+        if (!platosIds.includes(plato._id)) {
+          platosIds.push(plato._id);
+          observables.push(this.platosService.getPlatoById(`${this.token}`, plato._id));
+        }
       });
     });
   
@@ -49,13 +54,20 @@ export class CarritoComponent implements OnInit {
       (detalles: any[]) => {
         console.log("Detalles de platos recibidos:", detalles);
   
+        const detallesMap = new Map<string, any>();
+        detalles.forEach(detalle => {
+          if (detalle) { // Verifica que detalle no sea null
+            detallesMap.set(detalle._id, detalle);
+          }
+        });
+  
         this.pedidosList.forEach((pedido: any) => {
           pedido.detallesPlatos = [];
   
           pedido.platos.forEach((plato: any) => {
-            const detalle = detalles.find(det => det && det._id === plato._id);
+            const detalle = detallesMap.get(plato._id);
   
-            if (detalle) {
+            if (detalle && detalle._id) { // Verifica que detalle y detalle._id no sean null
               pedido.detallesPlatos.push(detalle);
             }
           });
@@ -68,21 +80,42 @@ export class CarritoComponent implements OnInit {
       }
     );
   }
+  
+  
+  
 
   // obtenerDetallesPlatos() {
+  //   const observables: Observable<any>[] = [];
   //   this.pedidosList.forEach((pedido: any) => {
-  //     console.log(pedido._id)
-  //     this.platosService.getPlatoById(`${this.token}`, pedido.platos[0]._id).subscribe(
-  //       (detalle: any) => {
-  //         pedido.detallePlato = detalle;
-  //         console.log(pedido.detallePlato)
-  //       },
-  //       error => {
-  //         console.error(`Error obteniendo detalles del plato ${pedido.idPlato}: ${error}`);
-  //       }
-  //     );
+  //     pedido.platos.forEach((plato: any) => {
+  //       observables.push(this.platosService.getPlatoById(`${this.token}`, plato._id));
+  //     });
   //   });
+  
+  //   forkJoin(observables).subscribe(
+  //     (detalles: any[]) => {
+  //       console.log("Detalles de platos recibidos:", detalles);
+  
+  //       this.pedidosList.forEach((pedido: any) => {
+  //         pedido.detallesPlatos = [];
+  
+  //         pedido.platos.forEach((plato: any) => {
+  //           const detalle = detalles.find(det => det && det._id === plato._id);
+  
+  //           if (detalle) {
+  //             pedido.detallesPlatos.push(detalle);
+  //           }
+  //         });
+  
+  //         console.log("Detalles de platos para el pedido:", pedido.detallesPlatos);
+  //       });
+  //     },
+  //     error => {
+  //       console.error(`Error obteniendo detalles de los platos: ${error}`);
+  //     }
+  //   );
   // }
+
 
   // calcularTotal(): number {
   //   let total = 0;

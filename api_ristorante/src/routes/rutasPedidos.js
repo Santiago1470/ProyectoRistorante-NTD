@@ -47,7 +47,7 @@ router.post('/carrito/agregar', verifyToken, async (req, res) => {
         // const platosIds = platos.map(plato => plato.plato);
         const platosIds = platos.plato;
         const platosExistenCount = await platosSchema.countDocuments({ _id: { $in: platosIds } });
-        if (platosExistenCount !== platosIds.length) {
+        if (platosExistenCount > 1) {
             return res.status(404).json({ error: 'Algunos platos no existen' });
         }
         const pedido = pedidos({

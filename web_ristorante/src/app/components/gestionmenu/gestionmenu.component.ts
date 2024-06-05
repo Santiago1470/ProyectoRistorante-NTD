@@ -166,7 +166,7 @@ export class GestionmenuComponent implements OnInit {
   }
 
   disminuirCantidad() {
-    if (this.platoAgregado.cantidad > 1) {
+    if (this.cantidad > 1) {
       this.cantidad--;
     }
   }
@@ -177,15 +177,17 @@ export class GestionmenuComponent implements OnInit {
       this.toastr.error('Error: Token de autenticación no encontrado');
       return;
     }
-    const pedido = {
-      plato: this.platoCarrito._id,
-      estado: 'pendiente',
+    const platos = {
+      platos:{
+        plato: this.platoCarrito._id,
+      estado: 'Plato en preparación',
       cantidad: this.cantidad
+      }
     };
-    this.pedidoService.newPedido(token, pedido)
+    this.pedidoService.newPedido(token, platos)
       .subscribe(
         (response: any) => {
-          this.cerrarModal();
+          this.cerrarModalCarrito();
         },
         (error: any) => {
         }

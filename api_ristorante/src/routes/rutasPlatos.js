@@ -4,7 +4,7 @@ const platos = require('../models/platosSchema');
 const admin = require('./administrador');
 const token = require('./tokenValidacion')
 
-router.post("/platos", admin, (req, res) => {
+router.post("/platos", admin, async(req, res) => {
     const plato = platos(req.body);
     plato.save()
         .then((data) => res.json(data))
@@ -13,20 +13,20 @@ router.post("/platos", admin, (req, res) => {
         });
 });
 
-router.get("/platos", (req, res) => {
+router.get("/platos", async(req, res) => {
     platos.find()
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
 
-router.get("/platos/:id", (req, res) => {
+router.get("/platos/:id", async (req, res) => {
     const { id } = req.params;
     platos.findById(id)
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
 
-router.put("/platos/:id", admin, (req, res) => {
+router.put("/platos/:id", admin, async(req, res) => {
     const { id } = req.params;
     const { nombre, descripcion, precio, categoria, ingredientes, imagen } = req.body;
     platos.updateOne({ _id: id }, {
@@ -35,14 +35,14 @@ router.put("/platos/:id", admin, (req, res) => {
         .catch((data) => res.json({ message: error }));
 });
 
-router.delete("/platos/:id", admin, (req, res) => {
+router.delete("/platos/:id", admin, async(req, res) => {
     const { id } = req.params;
     platos.findByIdAndDelete(id)
         .then((data) => res.json(data))
         .catch((error) => res.json({ message: error }));
 });
 
-router.get('/platosXCategorias/:categoria', (req, res) => {
+router.get('/platosXCategorias/:categoria', async(req, res) => {
 
     console.log('platosXCategorias consulta ' 
         + req.params.categoria
