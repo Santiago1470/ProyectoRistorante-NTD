@@ -10,11 +10,11 @@ import { AuthenticationService } from './authentication.service';
 export class PedidosService {
   apiUri = '/Ciprianis';
   token: String = this.authenticationService.getToken() || "";
-  idUsuario = this.authenticationService.getIdUsuario();
+  //idUsuario = this.authenticationService.getIdUsuario();
   constructor(private http: HttpClient, private authenticationService: AuthenticationService) { }
 
   getMisPedidos(): Observable<any>{
-    return this.http.get(`${this.apiUri}/carrito/mis-pedidos`, {
+    return this.http.get<any>(`${this.apiUri}/carrito/mis-pedidos`, {
       headers:
       {
         'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ export class PedidosService {
       {
         headers: {
           'Content-Type': 'application/json',
-          accessToken: `${token}`
+          'access-token': `${token}`
         }
       });
   }

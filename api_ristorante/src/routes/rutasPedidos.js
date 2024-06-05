@@ -10,12 +10,13 @@ const admin = require('./administrador');
 router.get('/carrito/mis-pedidos', verifyToken, async (req, res) => {
     const usuarioId = req.user;
     try {
-        const misPedidos = await pedidos.find({ usuario: usuarioId._id }).populate('platos').exec();
+        const misPedidos = await pedidos.find({ usuario: usuarioId }).populate('platos').exec();
         res.json(misPedidos);
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener los pedidos del usuario' });
     }
 });
+
 
 // Obtener todos los pedidos (para administradores)
 router.get('/carrito', admin, async (req, res) => {
@@ -34,9 +35,9 @@ router.get('/carrito', admin, async (req, res) => {
 
 // Agregar un pedido al carrito del usuario
 router.post('/carrito/agregar', verifyToken, async (req, res) => {
-    const {_id} = req.user;
+    const { _id } = req.user;
     const { platos } = req.body;
-    
+
     try {
         console.log(_id)
         const user = await usuarios.findById(_id);
@@ -52,13 +53,13 @@ router.post('/carrito/agregar', verifyToken, async (req, res) => {
         const pedido = pedidos({
             usuario: _id,
             platos: [
-              {
-                plato: platos.plato,
-                estado: platos.estado,
-                cantidad: platos.cantidad
-              }
+                {
+                    plato: platos.plato,
+                    estado: platos.estado,
+                    cantidad: platos.cantidad
+                }
             ]
-          });
+        });
         await pedido.save();
         user.carrito.push(pedido._id);
         await user.save();
