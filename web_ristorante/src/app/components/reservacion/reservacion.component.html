@@ -11,7 +11,7 @@
                     Reservaciones
                 </h2>
             </div>
-            <div class="contenedor-btnReservar" *ngIf="!mostrarFormulario">
+            <div class="contenedor-btnReservar" *ngIf="!mostrarFormulario && !esAdmin">
                 <input id="btnReservar" class="btn btn-success btnReservar" type="button" value="Reservar ahora" (click)="mostrarForm()" />
             </div>
             <div *ngIf="mostrarFormulario">

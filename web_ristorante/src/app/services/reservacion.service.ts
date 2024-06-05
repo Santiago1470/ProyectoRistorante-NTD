@@ -16,6 +16,16 @@ export class ReservacionService {
   autenticado: boolean = this.authenticationService.isLoggedIn();
   constructor(private httpClient: HttpClient, private authenticationService: AuthenticationService) { }
 
+  getReservasAdmin(): Observable<any> {
+    return this.httpClient.get(this.apiUri + "/reservas", {
+      headers:
+      {
+        'Content-Type': 'application/json',
+        'access-token': `${this.token}`
+      }
+    });
+  }
+
   getReservaciones(): Observable<any> {
     return this.httpClient.get(this.apiUri + `/reservas/${this.idUsuario}`, {
       headers:
