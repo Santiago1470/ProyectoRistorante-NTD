@@ -34,9 +34,9 @@ export class PedidosService {
         }
       });
   }
-  deletePedido( pedidoId: string, platoId:string): Observable<any> {
+  deletePedido( pedidoId: string): Observable<any> {
     return this.http.delete<any>(
-      `${this.apiUri}/carrito/${pedidoId}/plato/${platoId}`,
+      `${this.apiUri}/carrito/mis-pedidos/${pedidoId}`,
       {
         headers: {
           'Content-Type': 'application/json',

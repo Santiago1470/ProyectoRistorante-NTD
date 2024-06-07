@@ -16,7 +16,13 @@ router.get('/carrito/mis-pedidos', verifyToken, async (req, res) => {
         res.status(500).json({ error: 'Error al obtener los pedidos del usuario' });
     }
 });
-
+router.delete('/carrito/mis-pedidos/:pedidoId', verifyToken, async (req, res) => {
+    const pedidoId = req.params.pedidoId;
+    console.log(pedidoId)
+    pedidos.findByIdAndDelete(pedidoId)
+        .then((data) => res.json(data))
+        .catch((error) => res.status(500).json({ message: error }))
+});
 
 // Obtener todos los pedidos (para administradores)
 router.get('/carrito', admin, async (req, res) => {

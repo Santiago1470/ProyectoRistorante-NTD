@@ -28,7 +28,6 @@ export class CarritoComponent implements OnInit {
     this.pedidosService.getMisPedidos().subscribe(
       data => {
         this.pedidosList = data;
-        this.obtenerDetallesPlatos();
         console.log(this.pedidosList[0])
       },
       error => {
@@ -37,54 +36,54 @@ export class CarritoComponent implements OnInit {
     );
   }
 
-  obtenerDetallesPlatos() {
-    const observables: Observable<any>[] = [];
-    const platosIds: string[] = [];
+  // obtenerDetallesPlatos() {
+  //   const observables: Observable<any>[] = [];
+  //   const platosIds: string[] = [];
   
-    this.pedidosList.forEach((pedido: any) => {
-      pedido.platos.forEach((plato: any) => {
-        if (!platosIds.includes(plato._id)) {
-          platosIds.push(plato._id);
-          observables.push(this.platosService.getPlatoById(`${this.token}`, plato._id));
-        }
-      });
-    });
+  //   this.pedidosList.forEach((pedido: any) => {
+  //     pedido.platos.forEach((plato: any) => {
+  //       if (!platosIds.includes(plato._id)) {
+  //         platosIds.push(plato._id);
+  //         observables.push(this.platosService.getPlatoById(`${this.token}`, plato._id));
+  //       }
+  //     });
+  //   });
   
-    forkJoin(observables).subscribe(
-      (detalles: any[]) => {
-        // console.log("Detalles de platos recibidos:", detalles);
+  //   forkJoin(observables).subscribe(
+  //     (detalles: any[]) => {
+  //       // console.log("Detalles de platos recibidos:", detalles);
   
-        const detallesMap = new Map<string, any>();
-        detalles.forEach(detalle => {
-          if (detalle) { // Verifica que detalle no sea null
-            detallesMap.set(detalle._id, detalle);
-          }
-        });
+  //       const detallesMap = new Map<string, any>();
+  //       detalles.forEach(detalle => {
+  //         if (detalle) { // Verifica que detalle no sea null
+  //           detallesMap.set(detalle._id, detalle);
+  //         }
+  //       });
   
-        this.pedidosList.forEach((pedido: any) => {
-          pedido.detallesPlatos = [];
+  //       this.pedidosList.forEach((pedido: any) => {
+  //         pedido.detallesPlatos = [];
   
-          pedido.platos.forEach((plato: any) => {
-            const detalle = detallesMap.get(plato._id);
+  //         pedido.platos.forEach((plato: any) => {
+  //           const detalle = detallesMap.get(plato._id);
   
-            if (detalle && detalle._id) { // Verifica que detalle y detalle._id no sean null
-              pedido.detallesPlatos.push(detalle);
-            }
-          });
+  //           if (detalle && detalle._id) { // Verifica que detalle y detalle._id no sean null
+  //             pedido.detallesPlatos.push(detalle);
+  //           }
+  //         });
   
-          // console.log("Detalles de platos para el pedido:", pedido.detallesPlatos);
-        });
-      },
-      error => {
-        console.error(`Error obteniendo detalles de los platos: ${error}`);
-      }
-    );
-  }
+  //         // console.log("Detalles de platos para el pedido:", pedido.detallesPlatos);
+  //       });
+  //     },
+  //     error => {
+  //       console.error(`Error obteniendo detalles de los platos: ${error}`);
+  //     }
+  //   );
+  // }
   
   eliminarPlato(platoId: string) {
-    this.pedidosService.deletePedido(this.pedidosList[0]._id, platoId).subscribe(
+    this.pedidosService.deletePedido(platoId).subscribe(
       () => {
-        console.log('Plato eliminado correctamente');
+        window.location.reload();
       },
       error => {
         console.error('Error al eliminar el plato:', error);
